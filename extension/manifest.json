@@ -1,0 +1,42 @@
+{
+  "name": "CAPTCHA Harvester",
+  "version": "0.1",
+    "permissions": [
+        "storage",
+        "<all_urls>",
+        "tabs", 
+        "cookies",
+        "http://*/*", 
+        "https://*/*",
+        "proxy",
+        "webRequest", 
+        "webRequestBlocking",
+        "webNavigation"
+    ],
+    "content_scripts": [
+ {
+ "matches": ["http://*/*", "https://*/*"],
+  "js": ["content.js"],
+  "run_at": "document_end",
+     "all_frames": true,
+     "unsafe-eval": true
+ }
+], 
+  "manifest_version": 2,
+  "description": "Chrome extension for Python CAPTCHA Harvester.",
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+
+  "background": {
+    "scripts": [ "background.js"],
+    "persistent": true
+  },
+    
+  "browser_action": {
+    "default_icon": "icon.png"
+ 
+  }
+}
