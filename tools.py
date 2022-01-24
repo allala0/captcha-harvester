@@ -1,5 +1,6 @@
-import datetime
 from termcolor import colored
+
+import datetime
 import time
 import os
 from threading import Thread

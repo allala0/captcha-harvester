@@ -17,6 +17,7 @@ selenium==4.1.0
 six==1.16.0
 sniffio==1.2.0
 sortedcontainers==2.4.0
+termcolor==1.1.0
 trio==0.19.0
 trio-websocket==0.9.2
 urllib3==1.26.8
