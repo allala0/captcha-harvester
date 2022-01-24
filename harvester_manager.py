@@ -1,7 +1,6 @@
 # Importing local packages
 from harvester import Harvester
 # Importing external packages
-import tools
 # Importing standard packages
 import time
 from threading import Thread
@@ -9,8 +8,12 @@ import datetime
 
 
 class HarvesterManger:
-    def __init__(self, delay: int = 0.2, response_callback=None):
-
+    def __init__(self, delay: int = 0.1, response_callback=None):
+        """
+        HarvesterManager manages Harvester class objects.
+        :param delay: Delay in seconds between main_loop ticks.
+        :param response_callback: If callback function provided, this function will be called with capthcha response as param everytime CaptchaHarvester executes method "pull_responses_from_harvesters", if not provided responses will be added to self.response_queue.
+        """
         self.delay = delay
         self.response_callback = response_callback
 
@@ -21,9 +24,15 @@ class HarvesterManger:
     def add_harvester(self, harvester: Harvester) -> None:
         self.harvesters.append(harvester)
 
-    def start_harvesters(self, use_threads=True) -> None:
+    def start_harvesters(self, use_threads: bool = True) -> None:
         if use_threads:
-            tools.thread_loop(*[harvester.start for harvester in self.harvesters])
+            threads = list()
+            for harvester in self.harvesters:
+                threads.append(Thread(target=harvester.start))
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join()
         else:
             for harvester in self.harvesters:
                 harvester.start()
@@ -45,7 +54,7 @@ class HarvesterManger:
     def response_queue_check(self) -> None:
         self.response_queue = list(filter(lambda x: (datetime.datetime.now() - x['timestamp']).seconds < 120, self.response_queue))
 
-    def pull_responses_from_harvesters(self) -> list:
+    def pull_responses_from_harvesters(self):
         for harvester in self.harvesters:
             if self.response_callback:
                 for response in harvester.pull_response_queue():
@@ -53,5 +62,3 @@ class HarvesterManger:
             else:
                 self.response_queue += harvester.pull_response_queue()
 
-    def pull_response(self) -> dict:
-        return self.response_queue.pop(0) if self.response_queue else dict()

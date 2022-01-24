@@ -4,15 +4,22 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 # Importing standard packages
 import os
+from pathlib import Path
+
+DRIVER_CLOSED_MESSAGE = 'Unable to evaluate script: disconnected: not connected to DevTools\n'
+
+# Setting environment variable to disable webdriver_manager log.
+os.environ['WDM_LOG_LEVEL'] = '0'
 
 
 class Browser(Chrome):
 
-    os.environ['WDM_LOG_LEVEL'] = '0'
-
-    def __init__(self, executable=None, options=None, experimental_options=None):
-
+    def __init__(self, executable: str = None, options: tuple = None, experimental_options: dict = None):
         self.executable = executable
+        if executable:
+            if not os.path.isfile(executable):
+                self.executable = None
+
         self.options = ChromeOptions()
 
         if options:
@@ -22,24 +29,21 @@ class Browser(Chrome):
             for name, value in experimental_options.items():
                 self.options.add_experimental_option(name, value)
 
-    def start(self, url: str = None):
+    def start(self, url: str = None) -> None:
         service = Service(self.executable) if self.executable else Service(ChromeDriverManager().install())
         super(Browser, self).__init__(service=service, options=self.options)
         if url:
             self.get(url)
 
+    @property
     def is_website_ready(self) -> bool:
-        return self.execute_script('return document.readyState;') == 'complete' if self.is_open else False
+        return self.execute_script('return document.readyState;') == 'complete'
 
     @property
     def is_open(self) -> bool:
-        try:
-            log = self.get_log('driver')
-            if log:
-                if 'message' in log[0]:
-                    if log[0]['message'] == 'Unable to evaluate script: disconnected: not connected to DevTools\n':
-                        return False
-        except:
-            return False
-        else:
+        log = self.get_log('driver')
+        if not log:
             return True
+        if log[0].get('message') == DRIVER_CLOSED_MESSAGE:
+            return False
+        return True
