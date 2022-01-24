@@ -1,6 +1,6 @@
 # Importing local packages
 from browser import Browser
-from ..harvester_manager import HarvesterManger
+from harvester_manager import HarvesterManger
 from harvester import Harvester
 # Importing external packages
 from selenium.webdriver.common.by import By
