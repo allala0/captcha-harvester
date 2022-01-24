@@ -1,6 +1,6 @@
 # Importing local packages
 from browser import Browser
-from harvester_manager import HarvesterManger
+from ..harvester_manager import HarvesterManger
 from harvester import Harvester
 # Importing external packages
 from selenium.webdriver.common.by import By
@@ -123,7 +123,7 @@ def main():
     sitekey = '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-'
 
     harvester_manager = HarvesterManger()
-    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True))
+    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
     harvester_manager.start_harvesters()
 
     bot = Bot(harvester_manager)
