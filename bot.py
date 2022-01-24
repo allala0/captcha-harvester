@@ -1,12 +1,14 @@
 from browser import Browser
 from harvester_manager import HarvesterManger
 from harvester import Harvester
+
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import WebDriverException
+
 import time
 import datetime
 from threading import Thread
-from selenium.webdriver.common.by import By
 import random
-from selenium.common.exceptions import WebDriverException
 
 
 class Bot(Browser):

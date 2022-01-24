@@ -1,5 +1,3 @@
-from harvester import Harvester
-from harvester_manager import HarvesterManger
 from bot import Bot
 
 

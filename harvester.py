@@ -1,13 +1,14 @@
-from browser import Browser, By
+from browser import Browser
+from tools import mkdir
+
+from selenium.webdriver.common.by import By
 
 import pathlib
 import requests
 import random
 import os
 import datetime
-from tools import mkdir, timer
 from distutils.dir_util import copy_tree
-from threading import Thread
 
 
 class Harvester(Browser):
