@@ -1,10 +1,11 @@
+# Importing local packages
 from browser import Browser
 from harvester_manager import HarvesterManger
 from harvester import Harvester
-
+# Importing external packages
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import WebDriverException
-
+# Importing standard packages
 import time
 import datetime
 from threading import Thread
@@ -12,33 +13,15 @@ import random
 
 
 class Bot(Browser):
-    def __init__(self, url, sitekey, delay=0.2):
+    def __init__(self, harvester_managery, delay=0.2):
 
         super(Bot, self).__init__()
 
-        self.url = url
-        self.sitekey = sitekey
+        self.harvester_manager = harvester_managery
         self.delay = delay
         self.control_element = f'controlElement{random.randint(0, 10 ** 10)}'
 
         self.looping = False
-
-        self.harvester_manager = HarvesterManger()
-        self.harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
-        self.harvester_manager.start_harvesters()
-
-    def run_loops(self):
-
-        bot_loop_thread = Thread(target=self.main_loop)
-        harvester_manager_loop_thread = Thread(target=self.harvester_manager.main_loop)
-
-        bot_loop_thread.start()
-        harvester_manager_loop_thread.start()
-
-        bot_loop_thread.join()
-        harvester_manager_loop_thread.join()
-
-        return bot_loop_thread, harvester_manager_loop_thread
 
     def main_loop(self) -> None:
         """
@@ -111,8 +94,8 @@ class Bot(Browser):
                                 self.find_element(By.CLASS_NAME, 'g-recaptcha')
                                 value = self.find_element(By.CLASS_NAME, 'g-recaptcha-response').text
                                 if value == '' or self.execute_script('return grecaptcha.getResponse();') == '':
-                                    self.execute_script(f'document.getElementsByClassName("g-recaptcha-response")[0].value = "{self.harvester_manager.response_queue[0][1]}";')
-                                    self.execute_script(f'document.getElementsByClassName("timestamp_{self.control_element}")[0].innerHTML = "{self.harvester_manager.response_queue[0][0]}";')
+                                    self.execute_script(f'document.getElementsByClassName("g-recaptcha-response")[0].value = "{self.harvester_manager.response_queue[0]["response"]}";')
+                                    self.execute_script(f'document.getElementsByClassName("timestamp_{self.control_element}")[0].innerHTML = "{self.harvester_manager.response_queue[0]["timestamp"]}";')
                                     self.harvester_manager.response_queue.pop(0)
 
 
@@ -131,3 +114,30 @@ class Bot(Browser):
                     pass
 
                 time.sleep(self.delay)
+
+
+def main():
+    url = 'https://www.google.com/recaptcha/api2/demo'
+    sitekey = '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-'
+
+    harvester_manager = HarvesterManger()
+    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True))
+    harvester_manager.start_harvesters()
+
+    bot = Bot(harvester_manager)
+    bot.start(url=url)
+
+    bot_loop_thread = Thread(target=bot.main_loop)
+    harvester_manager_loop_thread = Thread(target=harvester_manager.main_loop)
+
+    bot_loop_thread.start()
+    harvester_manager_loop_thread.start()
+
+    bot_loop_thread.join()
+    harvester_manager_loop_thread.join()
+
+
+if __name__ == '__main__':
+    main()
+
+

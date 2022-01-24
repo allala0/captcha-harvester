@@ -1,14 +1,16 @@
+# Importing external packages
 from termcolor import colored
-
+# Importing standard packages
+from threading import Thread
 import datetime
 import time
 import os
-from threading import Thread
 
 
 def mkdir(path) -> None:
     if not os.path.isdir(path):
         os.mkdir(path)
+
 
 def timer(f):
     def wrapper(*args, **kwargs):
@@ -28,8 +30,10 @@ def timer(f):
         return rv
     return wrapper
 
+
 def convert_proxies(proxies):
     return [convert_proxy(n) for n in proxies]
+
 
 def convert_proxy(proxy):
     ip = ''
@@ -74,11 +78,12 @@ def get_time():
     if second < 10:
         second = "0" + str(second)
 
-    # return str(day) + "." + str(month) + "." + str(year) + " " + str(hour) + ":" + str(minute) + ":" + str(second)
     return f'{day}.{month}.{year} {hour}:{minute}:{second}'
+
 
 def log(*args, **kwargs):
     print(get_log(*args, **kwargs))
+
 
 def get_log(*args, **kwargs):
     args_ = []
@@ -150,4 +155,5 @@ def thread_loop(*funcs):
 def basic_thread(func):
     thread = Thread(target=func)
     thread.start()
+
     return thread

@@ -1,8 +1,8 @@
+# Importing external packages
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
-
 from webdriver_manager.chrome import ChromeDriverManager
-
+# Importing standard packages
 import os
 
 
@@ -22,7 +22,7 @@ class Browser(Chrome):
             for name, value in experimental_options.items():
                 self.options.add_experimental_option(name, value)
 
-    def start(self, url: str = None, **kwargs):
+    def start(self, url: str = None):
         service = Service(self.executable) if self.executable else Service(ChromeDriverManager().install())
         super(Browser, self).__init__(service=service, options=self.options)
         if url:
@@ -30,6 +30,7 @@ class Browser(Chrome):
 
     def is_website_ready(self) -> bool:
         return self.execute_script('return document.readyState;') == 'complete' if self.is_open else False
+
     @property
     def is_open(self) -> bool:
         try:

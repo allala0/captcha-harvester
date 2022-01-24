@@ -1,10 +1,11 @@
+# Importing local packages
 from browser import Browser
 from tools import mkdir
-
+# Importing external packages
 from selenium.webdriver.common.by import By
-
-import pathlib
 import requests
+# Importing standard packages
+import pathlib
 import random
 import os
 import datetime
@@ -12,7 +13,9 @@ from distutils.dir_util import copy_tree
 
 
 class Harvester(Browser):
-    count = 0
+    harvester_count = 0
+
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     mkdir('chrome_profiles')
     mkdir('chrome_profiles/harvester')
 
@@ -37,7 +40,7 @@ class Harvester(Browser):
         self.auto_close_login = auto_close_login
         self.open_youtube = open_youtube
 
-        self.id = Harvester.count
+        self.id = Harvester.harvester_count
 
         self.login_url = 'https://accounts.google.com'
         self.logged_url = 'https://myaccount.google.com'
@@ -50,25 +53,19 @@ class Harvester(Browser):
         self.extension_path = f"{self.profile_path}\\extension"
 
         self.to_open = ['https://www.youtube.com'] if self.open_youtube else []
-        self.control_element_class = f'controlElement{random.randint(0, 10 ** 10)}'
+        self.control_element = f'controlElement{random.randint(0, 10 ** 10)}'
         self.is_youtube_setup = False
-        self.closed = False
         self.ticking = False
 
         self.response_queue = list()
 
-        Harvester.count += 1
+        Harvester.harvester_count += 1
         mkdir(self.profile_path)
         copy_tree(self.extension_blueprint_path, f'{self.profile_path}\\extension')
 
         if self.log_in:
-            def login_decorator(func):
-                def wrapper(*args, **kwargs):
-                    self.login()
-                    rv = func(*args, **kwargs)
-                    return rv
-                return wrapper
-            self.start = login_decorator(self.start)
+            self.decorate_start_with_login()
+
 
         options = (
             f'--app={self.url}',
@@ -84,6 +81,17 @@ class Harvester(Browser):
         }
 
         super(Harvester, self).__init__(executable=chromedriver_executable, options=options, experimental_options=experimental_options)
+
+    def decorate_start_with_login(self) -> None:
+        def login_decorator(func):
+            def wrapper(*args, **kwargs):
+                self.login()
+                rv = func(*args, **kwargs)
+                return rv
+
+            return wrapper
+
+        self.start = login_decorator(self.start)
 
     def login(self) -> None:
 
@@ -106,12 +114,11 @@ class Harvester(Browser):
 
         with open(f'{self.extension_path}\\content.js', 'w') as f:
             f.write(content_js)
-        # args = tuple(tuple(filter(lambda x: 'app=' not in x, self.options)) + (f'--load-extension="{self.extension_path}"', f'--app={start_url}'))
 
         if self.chrome_executable is None:
-            paths = ('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe', 'C:\Program Files\Google\Chrome\Application\chrome.exe')
+            paths = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe', 'C:\Program Files\Google\Chrome\Application\chrome.exe'
         else:
-            paths = (self.chrome_executable)
+            paths = self.chrome_executable
 
         for path in paths:
             if os.path.isfile(path):
@@ -127,7 +134,7 @@ class Harvester(Browser):
             js_url = 'https://www.google.com/recaptcha/api.js'
             js = "(function(){var w=window,C='___grecaptcha_cfg',cfg=w[C]=w[C]||{},N='grecaptcha';var gr=w[N]=w[N]||{};gr.ready=gr.ready||function(f){(cfg['fns']=cfg['fns']||[]).push(f);};w['__recaptcha_api']='https://www.google.com/recaptcha/api2/';(cfg['render']=cfg['render']||[]).push('onload');w['__google_recaptcha_client']=true;var d=document,po=d.createElement('script');po.type='text/javascript';po.async=true;po.src='https://www.gstatic.com/recaptcha/releases/-FJgYf1d3dZ_QPcZP7bd85hc/recaptcha__en.js';po.crossOrigin='anonymous';po.integrity='sha384-w2lIrXdcsRgXIRsq1Y2C2rGrB0G3iE5CLYGxlFzUAbix3gGjUFYcQavOqddMOp1u';var e=d.querySelector('script[nonce]'),n=e&&(e['nonce']||e.getAttribute('nonce'));if(n){po.setAttribute('nonce',n);}var s=d.getElementsByTagName('script')[0];s.parentNode.insertBefore(po, s);})();"
             icon = 'img/icon.png'
-            html = f'<html><head><link rel="icon" href="{icon}"><title>{title}</title><script src="{js_url}" async defer></script></head><body><div class="{self.control_element_class}"></div><div id="container"><div id="g-recaptcha" class="g-recaptcha" data-sitekey="{self.sitekey}"></div></div></body></html>'
+            html = f'<html><head><link rel="icon" href="{icon}"><title>{title}</title><script src="{js_url}" async defer></script></head><body><div class="{self.control_element}"></div><div id="container"><div id="g-recaptcha" class="g-recaptcha" data-sitekey="{self.sitekey}"></div></div></body></html>'
 
             container = 'document.getElementById("container")'
 
@@ -157,28 +164,27 @@ class Harvester(Browser):
                 except:
                     print('err2')
 
-    def get_response(self) -> list:
+    def get_response(self) -> dict:
         if self.is_open:
             try:
                 r = self.execute_script('return grecaptcha.getResponse();')
-                return (datetime.datetime.now(), r) if r else []
+                return {'timestamp': datetime.datetime.now(), 'response': r} if r else dict()
             except:
-                return []
+                return dict()
         else:
-            return []
+            return dict()
 
-    def pull_response(self) -> list:
-        if self.response_queue:
-            response = self.response_queue[0]
-            self.response_queue.pop(0)
-            return response
-        else:
-            return []
+    def pull_response_queue(self) -> list:
+        response_queue, self.response_queue = self.response_queue, list()
+        return response_queue
+
+    def pull_response(self) -> dict:
+        return self.response_queue.pop(0) if self.response_queue else dict()
 
     def is_set(self) -> bool:
         if self.is_open:
             try:
-                return True if self.find_elements(By.CLASS_NAME, self.control_element_class) else False
+                return True if self.find_elements(By.CLASS_NAME, self.control_element) else False
             except:
                 return False
         else:
@@ -200,9 +206,7 @@ class Harvester(Browser):
             except:
                 print('err5')
 
-    def response_queue_check(self) -> None:
-        self.response_queue = list(filter(lambda x: (datetime.datetime.now() - x[0]).seconds < 120, self.response_queue))
-
+    def response_check(self) -> None:
         response = self.get_response()
         if response:
             self.reset()
@@ -210,25 +214,26 @@ class Harvester(Browser):
 
     def youtube_setup(self) -> None:
         try:
-            to_open, self.to_open = self.to_open, list()
-            for el in to_open:
-                try:
-                    self.execute_script(
-                        f"window.open('{el}', '_blank', 'height=200,scrollbars=yes,status=yes,menubar=no,toolbar=no').resizeTo(480, 380);")
-                except:
-                    self.to_open.append(el)
+            if self.to_open:
+                to_open, self.to_open = self.to_open, list()
+                for el in to_open:
+                    try:
+                        self.execute_script(
+                            f"window.open('{el}', '_blank', 'height=200,scrollbars=yes,status=yes,menubar=no,toolbar=no').resizeTo(480, 380);")
+                    except:
+                        self.to_open.append(el)
 
-            if len(self.window_handles) > 1 and not self.is_youtube_setup:
-                self.switch_to.window(self.window_handles[1])
-                if self.current_url == 'https://www.youtube.com/':
-                    links = self.find_elements(By.TAG_NAME, 'a')
-                    for link in links:
-                        if link.get_attribute('href'):
-                            if 'https://www.youtube.com/watch?v=' in link.get_attribute('href'):
-                                self.get(link.get_attribute('href'))
-                                self.refresh()
-                                break
-                self.is_youtube_setup = True
+                if len(self.window_handles) > 1 and not self.is_youtube_setup:
+                    self.switch_to.window(self.window_handles[1])
+                    if self.current_url == 'https://www.youtube.com/':
+                        links = self.find_elements(By.TAG_NAME, 'a')
+                        for link in links:
+                            if link.get_attribute('href'):
+                                if 'https://www.youtube.com/watch?v=' in link.get_attribute('href'):
+                                    self.get(link.get_attribute('href'))
+                                    self.refresh()
+                                    break
+                    self.is_youtube_setup = True
         finally:
             try:
                 self.switch_to.window(self.window_handles[0])
@@ -237,11 +242,10 @@ class Harvester(Browser):
 
     def tick(self) -> None:
         self.ticking = True
-
         if self.is_open:
             self.setup()
             self.youtube_setup()
-            self.response_queue_check()
+            self.response_check()
             self.window_size_check()
 
         self.ticking = False
