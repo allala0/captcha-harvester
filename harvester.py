@@ -82,6 +82,7 @@ class Harvester(Browser):
             '--disable-menubar',
             '--disable-toolbar',
             '--mute-audio',
+            '--log-level=3',
         )
         chrome_experimental_options = {
             'prefs': {'profile': {'exit_type': 'Normal'}}
