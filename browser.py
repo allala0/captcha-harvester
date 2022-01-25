@@ -4,7 +4,6 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 # Importing standard packages
 import os
-from pathlib import Path
 
 DRIVER_CLOSED_MESSAGE = 'Unable to evaluate script: disconnected: not connected to DevTools\n'
 
