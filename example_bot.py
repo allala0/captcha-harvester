@@ -13,7 +13,7 @@ import random
 
 
 class Bot(Browser):
-    def __init__(self, harvester_manager, delay=0.1):
+    def __init__(self, harvester_manager: HarvesterManger, delay: int = 0.1):
 
         super(Bot, self).__init__()
 
@@ -32,7 +32,7 @@ class Bot(Browser):
                     try:
                         self.tick()
                     except WebDriverException:
-                        print('Some selenium exception.')
+                        print('Some selenium exception (bot).')
                 time.sleep(self.delay)
 
     def tick(self):
@@ -120,7 +120,7 @@ class Bot(Browser):
 
 def main():
     url = 'https://www.google.com/recaptcha/api2/demo'
-    sitekey = '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-'
+    sitekey = Harvester.get_sitekey(url)
 
     harvester_manager = HarvesterManger()
     harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
@@ -141,5 +141,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
