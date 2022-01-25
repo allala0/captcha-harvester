@@ -1,6 +1,5 @@
 # Importing local packages
 from harvester import Harvester
-# Importing external packages
 # Importing standard packages
 import time
 from threading import Thread
@@ -61,4 +60,3 @@ class HarvesterManger:
                     self.response_callback(response)
             else:
                 self.response_queue += harvester.pull_response_queue()
-
