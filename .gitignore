@@ -4,3 +4,4 @@ chrome_profiles/
 venv/
 Pipfile
 Pipfile.lock
+ignore/
