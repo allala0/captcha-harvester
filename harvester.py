@@ -22,7 +22,7 @@ YOUTUBE_VIDEO_URL_PREFIX = 'https://www.youtube.com/watch?v='
 
 CAPTCHA_JS_URL = 'https://www.google.com/recaptcha/api.js'
 
-DEFAULT_CHROME_PATHS = ('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe', 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe')
+DEFAULT_CHROME_PATHS = ('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe', 'C:/Program Files/Google/Chrome/Application/chrome.exe')
 
 
 class Harvester(Browser):
@@ -31,7 +31,7 @@ class Harvester(Browser):
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     pathlib.Path('chrome_profiles/harvester').mkdir(parents=True, exist_ok=True)
 
-    extension_blueprint_path = f'{pathlib.Path().absolute()}\\extension'
+    extension_blueprint_path = f'{pathlib.Path().absolute()}/extension'
 
     def __init__(self, url: str, sitekey: str, log_in: bool = False, chrome_executable: str = None, chromedriver_executable: str = None, download_js: bool = False, auto_close_login: bool = True, open_youtube: bool = False, harvester_width: int = 420, harvester_height: int = 600, youtube_width: int = 480, youtube_height: int = 380):
         """
@@ -64,8 +64,8 @@ class Harvester(Browser):
 
         self.id = Harvester.harvester_count
 
-        self.profile_path = f'{pathlib.Path().absolute()}\\chrome_profiles\\harvester\\{self.id}'
-        self.extension_path = f'{self.profile_path}\\extension'
+        self.profile_path = f'{pathlib.Path().absolute()}/chrome_profiles/harvester/{self.id}'
+        self.extension_path = f'{self.profile_path}/extension'
 
         self.response_queue = list()
         self.control_element = f'controlElement{random.randint(0, 10 ** 10)}'
@@ -112,7 +112,7 @@ class Harvester(Browser):
             start_url = LOGIN_URL
             content_js = ''
 
-        with open(f'{self.extension_path}\\content.js', 'w') as f:
+        with open(f'{self.extension_path}/content.js', 'w') as f:
             f.write(content_js)
 
         chrome_args = (
