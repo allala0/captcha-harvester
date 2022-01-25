@@ -4,6 +4,7 @@ from browser import Browser
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 import requests
+from requests_html import HTML
 # Importing standard packages
 import pathlib
 import random
@@ -11,12 +12,13 @@ import os
 import datetime
 from distutils.dir_util import copy_tree
 
+
 LOGIN_URL = 'https://accounts.google.com'
 LOGGED_URL = 'https://myaccount.google.com'
 LOGIN_AUTO_CLOSE_URL = 'https://www.google.com'
 
 YOUTUBE_URL = 'https://www.youtube.com/'
-YOUTUBE_VIDEO_PREFIX_URL = 'https://www.youtube.com/watch?v='
+YOUTUBE_VIDEO_URL_PREFIX = 'https://www.youtube.com/watch?v='
 
 CAPTCHA_JS_URL = 'https://www.google.com/recaptcha/api.js'
 
@@ -215,7 +217,7 @@ class Harvester(Browser):
             for link in self.find_elements(By.TAG_NAME, 'a'):
                 if not link.get_attribute('href'):
                     continue
-                if YOUTUBE_VIDEO_PREFIX_URL in link.get_attribute('href'):
+                if YOUTUBE_VIDEO_URL_PREFIX in link.get_attribute('href'):
                     self.get(link.get_attribute('href'))
                     self.refresh()
                     break
@@ -239,3 +241,21 @@ class Harvester(Browser):
     @property
     def is_set(self) -> bool:
         return True if self.find_elements(By.CLASS_NAME, self.control_element) else False
+
+    @staticmethod
+    def get_sitekey(url: str):
+        try:
+            response = requests.get(url)
+            if not response.ok:
+                return
+        except requests.exceptions.BaseHTTPError:
+            return
+        else:
+            html = HTML(html=response.text)
+            captcha_element = html.find('.g-recaptcha')
+            sitekey = captcha_element[0].attrs.get('data-sitekey') if captcha_element else None
+            if sitekey:
+                return sitekey
+            html_formated = ''.join(response.text.split())
+            sitekey_index = html_formated.find('sitekey')
+            return html_formated[sitekey_index + 10:sitekey_index + 50] if sitekey_index != -1 and len(html_formated) > sitekey_index + 50 else None
