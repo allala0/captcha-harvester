@@ -1,3 +1,5 @@
+<h1 align="center">Captcha Harvester</h1>
+
 ## Introduction
 
 ### What is captcha harvester?
@@ -22,16 +24,18 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 
 ## Installation
 
-- Download and install Python 3 from <a href="https://www.python.org/downloads/" target="_blank">link</a>.
-- Install all packages from requirements.txt. In terminal type: `pip install -r requirements.txt`
-- Install Google Chrome from <a href="https://www.google.com/chrome/" target="_blank">link</a>.
+- Download and install Python 3 from <a href="https://www.python.org/downloads/">link</a>.
+- Install all packages from requirements.txt. In terminal type: `pip install -r requirements.txt` ( You need to be in same directory as requirements.txt or provide full path to requirements.txt. )
+- Install Google Chrome from <a href="https://www.google.com/chrome/">link</a>.
 
 ## How to use
 
 - Example code
 
-  - In example.py is shown an example of a simple way to use harvester.
-  - In example_bot.py is shown an example of connecting harvester with bot and sending solved captchas to it.
+    - In example.py is shown an example of a simple way to use harvester.
+    - In example_bot.py is shown an example of connecting harvester with bot and sending solved captchas to it.
 
-To run example code just run example.py or example_bot.py with python.
+    To run example code just run example.py or example_bot.py with python.
+    
+
 
