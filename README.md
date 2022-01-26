@@ -1,10 +1,10 @@
 ## Introduction
 
-- What is captcha harvester?
+### What is captcha harvester?
 
-Captcha harvester is a tool to solve captchas yourself, store them, and evantually use them when you need them in your automation software / bot.
+Captcha harvester is a tool to solve captchas yourself, store them, and evantually use when you need them in your automation software / bot.
 
-- Example usecase
+### Example usecase
 
 Bot to buy limited products. When your bot is at checkout, you don't have to solve captcha, you can solve it before and inject solved captcha when it needed. It gives you advanatge of extra couple seconds.
 
