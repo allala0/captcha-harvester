@@ -118,23 +118,34 @@ class Bot(Browser):
                     f'document.getElementsByClassName("clicked_{self.control_element}")[0].innerHTML = "";')
 
 
+# Example of using captcha harvester with example Bot class that is receiving captcha responses and using them to submit form.
+# NOTE. This example uses 2 Harvester objects, 1 of them uses logging in to Google account and launching extra window with Youtube.
+
+
 def main():
     url = 'https://www.google.com/recaptcha/api2/demo'
+    # Scraping sitekey from url
     sitekey = Harvester.get_sitekey(url)
 
+    # Creating HarvesterManager object
     harvester_manager = HarvesterManger()
+    # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
+    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
+    # Adding Harvester object to HarvesterManager object with additional arguments to login to Google account and open window with Youtube.
     harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True))
+    # Launching all harvesters
     harvester_manager.start_harvesters()
-
+    # Creating Bot object with HarvesterManager as argument so it can reach its response_queue
     bot = Bot(harvester_manager)
+    # Launching Bot
     bot.start(url=url)
-
+    # Creating bot and harvester_manager main_loop threads
     bot_loop_thread = Thread(target=bot.main_loop)
     harvester_manager_loop_thread = Thread(target=harvester_manager.main_loop)
-
+    # Starting threads
     bot_loop_thread.start()
     harvester_manager_loop_thread.start()
-
+    # Joining threads
     bot_loop_thread.join()
     harvester_manager_loop_thread.join()
 

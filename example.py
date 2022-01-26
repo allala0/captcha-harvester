@@ -1,10 +1,24 @@
 from harvester_manager import HarvesterManger
 from harvester import Harvester
 
-url = 'https://www.google.com/recaptcha/api2/demo'
-sitekey = Harvester.get_sitekey(url)
+# Simple example of using captcha harvester with one Harvester and printing captcha responses to console.
 
-harvester_manager = HarvesterManger(response_callback=lambda x: print(x['response']))
-harvester_manager.add_harvester(Harvester(url, sitekey))
-harvester_manager.start_harvesters()
-harvester_manager.main_loop()
+
+def main():
+    url = 'https://www.google.com/recaptcha/api2/demo'
+    # Scraping sitekey from url
+    sitekey = Harvester.get_sitekey(url)
+
+    # Creating HarvesterManager object with additional argument response_callback which is function,
+    # that will be called everytime HarvesterManager pull captcha response from Harvseter ( after user solve captcha )
+    harvester_manager = HarvesterManger(response_callback=lambda x: print(x['response']))
+    # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
+    harvester_manager.add_harvester(Harvester(url, sitekey))
+    # Launching all harvesters
+    harvester_manager.start_harvesters()
+    # Starting main_loop inside HarvesterManager object, that will manage all Harvesters
+    harvester_manager.main_loop()
+
+
+if __name__ == '__main__':
+    main()
