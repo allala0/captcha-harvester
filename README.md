@@ -66,68 +66,68 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 
     - In example.py is shown an example of a simple way to use harvester.
     
-    ```
-    # Simple example of using captcha harvester with one Harvester and printing captcha responses to console.
+        ```
+        # Simple example of using captcha harvester with one Harvester and printing captcha responses to console.
 
 
-    def main():
-        url = 'https://www.google.com/recaptcha/api2/demo'
-        # Scraping sitekey from url
-        sitekey = Harvester.get_sitekey(url)
+        def main():
+            url = 'https://www.google.com/recaptcha/api2/demo'
+            # Scraping sitekey from url
+            sitekey = Harvester.get_sitekey(url)
 
-        # Creating HarvesterManager object with additional argument response_callback which is function,
-        # that will be called everytime HarvesterManager pull captcha response from Harvseter ( after user solve captcha )
-        harvester_manager = HarvesterManger(response_callback=lambda x: print(x['response']))
-        # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
-        harvester_manager.add_harvester(Harvester(url, sitekey))
-        # Launching all harvesters
-        harvester_manager.start_harvesters()
-        # Starting main_loop inside HarvesterManager object, that will manage all Harvesters
-        harvester_manager.main_loop()
+            # Creating HarvesterManager object with additional argument response_callback which is function,
+            # that will be called everytime HarvesterManager pull captcha response from Harvseter ( after user solve captcha )
+            harvester_manager = HarvesterManger(response_callback=lambda x: print(x['response']))
+            # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
+            harvester_manager.add_harvester(Harvester(url, sitekey))
+            # Launching all harvesters
+            harvester_manager.start_harvesters()
+            # Starting main_loop inside HarvesterManager object, that will manage all Harvesters
+            harvester_manager.main_loop()
 
-    
-    if __name__ == '__main__':
-        main()
-    ```
+
+        if __name__ == '__main__':
+            main()
+        ```
     
     - In example_bot.py is shown an example of connecting harvester with bot and sending solved captchas to it.
     
-    ```
-    # Example of using captcha harvester with example Bot class that is receiving captcha responses and using them to submit form.
-    # NOTE. This example uses 2 Harvester objects, 1 of them uses logging in to Google account and launching extra window with Youtube.
+        ```
+        # Example of using captcha harvester with example Bot class that is receiving captcha responses and using them to submit form.
+        # NOTE. This example uses 2 Harvester objects, 1 of them uses logging in to Google account and launching extra window with Youtube.
 
 
-    def main():
-        url = 'https://www.google.com/recaptcha/api2/demo'
-        # Scraping sitekey from url
-        sitekey = Harvester.get_sitekey(url)
+        def main():
+            url = 'https://www.google.com/recaptcha/api2/demo'
+            # Scraping sitekey from url
+            sitekey = Harvester.get_sitekey(url)
 
-        # Creating HarvesterManager object
-        harvester_manager = HarvesterManger()
-        # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
-        harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
-        # Adding Harvester object to HarvesterManager object with additional arguments to login to Google account and open window with Youtube.
-        harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True))
-        # Launching all harvesters
-        harvester_manager.start_harvesters()
-        # Creating Bot object with HarvesterManager as argument so it can reach its response_queue
-        bot = Bot(harvester_manager)
-        # Launching Bot 
-        bot.start(url=url)
-        # Creating bot and harvester_manager main_loop threads
-        bot_loop_thread = Thread(target=bot.main_loop)
-        harvester_manager_loop_thread = Thread(target=harvester_manager.main_loop)
-        # Starting threads
-        bot_loop_thread.start()
-        harvester_manager_loop_thread.start()
-        # Joining threads
-        bot_loop_thread.join()
-        harvester_manager_loop_thread.join()
+            # Creating HarvesterManager object
+            harvester_manager = HarvesterManger()
+            # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
+            harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
+            # Adding Harvester object to HarvesterManager object with additional arguments to login to Google account and open window with Youtube.
+            harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True))
+            # Launching all harvesters
+            harvester_manager.start_harvesters()
+            # Creating Bot object with HarvesterManager as argument so it can reach its response_queue
+            bot = Bot(harvester_manager)
+            # Launching Bot 
+            bot.start(url=url)
+            # Creating bot and harvester_manager main_loop threads
+            bot_loop_thread = Thread(target=bot.main_loop)
+            harvester_manager_loop_thread = Thread(target=harvester_manager.main_loop)
+            # Starting threads
+            bot_loop_thread.start()
+            harvester_manager_loop_thread.start()
+            # Joining threads
+            bot_loop_thread.join()
+            harvester_manager_loop_thread.join()
 
 
-    if __name__ == '__main__':
-        main()
-    ```
+        if __name__ == '__main__':
+            main()
+        ```
     
     To run example code just run example.py or example_bot.py with python.
         
