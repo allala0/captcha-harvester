@@ -123,7 +123,7 @@ def main():
     sitekey = Harvester.get_sitekey(url)
 
     harvester_manager = HarvesterManger()
-    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
+    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True))
     harvester_manager.start_harvesters()
 
     bot = Bot(harvester_manager)
