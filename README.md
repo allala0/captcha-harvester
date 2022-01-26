@@ -1,4 +1,5 @@
 <h1 align="center">Captcha Harvester</h1>
+<p align="center">Solve your captchas beforehand and use when you need them.</p>
 
 ## Introduction
 
