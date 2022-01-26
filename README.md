@@ -50,5 +50,7 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
     To run example code just run example.py or example_bot.py with python.
     
     Note that in example_bot.py Harvester is added with additional parameters, there are much more additional parameters ( look in Harvester class ).
+    
     Note that you can add as many harvesters as you want ( Limit is only your computer specs ).
+    
     Note that there is expiration time for every captcha solved. For reCaptcha v2 expiration time is 120 seconds counted from moment of successful solve end.
