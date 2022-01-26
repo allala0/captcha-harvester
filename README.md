@@ -96,9 +96,9 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
         
 ## TODO
 
--[x] **reCAPTCHA v2**
--[] **reCAPTCHA v3**
--[] **hCapctcha**
+- [x] **reCAPTCHA v2 compatibility**
+- [ ] **reCAPTCHA v3 compatibility**
+- [ ] **hCapctcha compatibility**
 
 ## LICENSE
 
