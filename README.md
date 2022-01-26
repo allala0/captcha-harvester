@@ -28,7 +28,7 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 
 ## How to use
 
--Example code
+- Example code
 
 -- In example.py is shown an example of a simple way to use harvester.
 -- In example_bot.py is shown an example of connecting harvester with bot and sending solved captchas to it.
