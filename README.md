@@ -1,7 +1,6 @@
 <h1 align="center">Captcha Harvester</h1>
 <p align="center">Solve captcha beforehand and use them when needed.</p>
-<p align="center"><img src="img/icon.png"/></p>
-<p align="center"><img src="img/logo.png" width=500;/></p>
+<p align="center"><img src="img/logo.png" width=300;/></p>
 
 
 ## Introduction
