@@ -38,9 +38,9 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 
 ## Installation
 
-- Download and install Python 3 from <a href="https://www.python.org/downloads/">link</a>.
+- Download and install Python 3 from <a href="https://www.python.org/downloads/">here</a>.
 - Install all packages from requirements.txt. In terminal type: `pip install -r requirements.txt` ( You need to be in same directory as requirements.txt or provide full path to requirements.txt. )
-- Install Google Chrome from <a href="https://www.google.com/chrome/">link</a>.
+- Install Google Chrome from <a href="https://www.google.com/chrome/">here</a>.
 
 ## How to use
 
