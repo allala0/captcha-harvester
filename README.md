@@ -21,7 +21,7 @@ There is a HarvesterManager class that is managing all Harvesters, when main_loo
 
 ### Example of using captcha harvester
 
-<p align="center"><img src="img/example_use.gif"/></p>
+<p align="center"><img src="img/example.gif"/></p>
 
 ## Features
 
