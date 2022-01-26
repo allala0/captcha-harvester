@@ -15,7 +15,7 @@ Bot to buy limited products. When your bot is at checkout, you don't have to sol
 
 ### How does captcha harvester work?
 
-Harvester is instance of chromedriver ran with Selenium. Chromedriver opens website you want to harvest captchas on. HTML is changed to blank HTML document with just captcha box in it. Captcha is rendered and user can solve captchas. When captcha is solved by user, captcha response is stored in response queue and captcha box is reseted so user can solve more captchas. When captcha response is needed in your automation software / bot it can be pulled from response queue and used.
+Harvester is instance of automated chrome window. Harvester opens website you want to harvest captchas on. HTML is changed to blank HTML document with just captcha box in it. Captcha is rendered and user can solve captchas. When captcha is solved by user, captcha response is stored in response queue and captcha box is reseted so user can solve more captchas. When captcha response is needed in your automation software / bot it can be pulled from response queue and used.
 
 There is a HarvesterManager class that is managing all Harvesters, when main_loop is ran, HarvesterManager is executing tick function in all Harvesters in infinite loop, all responses from queues in Harvesters are moved to single queue in HarvesterManager.
 
