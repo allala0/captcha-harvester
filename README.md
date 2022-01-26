@@ -11,6 +11,17 @@ Captcha harvester is a tool to solve captchas yourself, store them, and evantual
 
 Bot to buy limited products. When your bot is at checkout, you don't have to solve captcha, you can solve it before and inject solved captcha when it needed. It gives you advanatge of extra couple seconds.
 
+### How does captcha harvester work?
+
+Harvester is instance of chromedriver ran with Selenium. Chromedriver opens website you want to harvest captchas on. HTML is changed to blank HTML document with just captcha box in it. Captcha is rendered and user can solve captchas. When captcha is solved by user, captcha response is stored in response queue and captcha box is reseted so user can solve more captchas. When captcha response is needed in your automation software / bot it can be pulled from response queue and used.
+
+There is a HarvesterManager class that is managing all Harvesters, when main_loop is ran, HarvesterManager is executing tick function in all Harvesters in infinite loop, all responses from queues in Harvesters are moved to single queue in HarvesterManager.
+
+## Features
+
+Captcha Harvester supports logging in to your Google account to lower captcha difficulty.
+Harvester can run with additional window where Youtube videos will be viewed to make activity on your Google account to lower captcha difficulty. 
+
 ## Compatibility
 
 Captcha harvester was tested and working on Windows and Linux.
@@ -38,5 +49,6 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 
     To run example code just run example.py or example_bot.py with python.
     
-
-
+    Note that in example_bot.py Harvester is added with additional parameters, there are much more additional parameters ( look in Harvester class ).
+    Note that you can add as many harvesters as you want ( Limit is only your computer specs ).
+    Note that there is expiration time for every captcha solved. For reCaptcha v2 expiration time is 120 seconds counted from moment of successful solve end.
