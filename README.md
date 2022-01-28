@@ -21,13 +21,21 @@ Bot to buy limited products. When your bot is at checkout, you don't have to sol
 
 ### How does captcha harvester work?
 
-First we need to know what is a sitekey. Sitekey is a string that is linked to website and is identifying it regarding captcha. Sitekey is needed to render captcha box. Note that if you will try to render captcha on website with sitekey that is not matching website it will fail. So we need two things: website url and website sitekey. Sitekey can be found in element with "g-recaptcha" class in "data-sitekey" tag or can be found in javascript like: 'sitekey' : 'some_siyekey'.
+- Sitekey
 
-Next we need to undesrstand what determines if captcha is solved. When captcha is solved inside element with id "g-recaptcha-response" will be long string: it is called captcha response. Now we can copy that string, and when we need to submit some form where captcha is needed to be solved, we can inject inside same element captcha response and submit form.
+    First we need to know what is a sitekey. Sitekey is a string that is linked to website and is identifying it regarding captcha. Sitekey is needed to render captcha box. Note that if you will try to render captcha on website with sitekey that is not matching website it will fail. So we need two things: website url and website sitekey. Sitekey can be found in element with "g-recaptcha" class in "data-sitekey" tag or can be found in javascript like: 'sitekey' : 'some_siyekey'.
+    
+- Captcha response
 
-Harvester is instance of automated browser window. Harvester opens website you want to harvest captchas on. HTML is changed to blank HTML document with just captcha box in it. Captcha is rendered and you can solve captchas. When you solve captcha, captcha response is stored in response queue and captcha box is reseted so you can solve more captchas. When captcha response is needed in your automation software / bot it can be pulled from response queue and used.
+    Next we need to undesrstand what determines if captcha is solved. When captcha is solved inside element with id "g-recaptcha-response" will be long string: it is called captcha response. Now we can copy that string, and when we need to submit some form where captcha is needed to be solved, we can inject inside same element captcha response and submit form.
 
-There is a HarvesterManager class that is managing all Harvesters, when main_loop is called, HarvesterManager is executing tick function in all Harvesters in infinite loop, all responses from queues in Harvesters are moved to single queue in HarvesterManager. Note that there is expiration time for every captcha solved. For reCAPTCHA v2 expiration time is 120 seconds counted from moment of successful captcha solve.
+- Harvester
+
+    Harvester is instance of automated browser window. Harvester opens website you want to harvest captchas on. HTML is changed to blank HTML document with just captcha box in it. Captcha is rendered and you can solve captchas. When you solve captcha, captcha response is stored in response queue and captcha box is reseted so you can solve more captchas. When captcha response is needed in your automation software / bot it can be pulled from response queue and used.
+
+- HarvesterManager
+
+    There is a HarvesterManager class that is managing all Harvesters, when main_loop is called, HarvesterManager is executing tick function in all Harvesters in infinite loop, all responses from queues in Harvesters are moved to single queue in HarvesterManager. Note that there is expiration time for every captcha solved. For reCAPTCHA v2 expiration time is 120 seconds counted from moment of successful captcha solve.
 
 ### Example of using captcha harvester
 
@@ -139,7 +147,7 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 - [ ] **captcha harvester as package**
 - [ ] **captcha harvester installed with pip**
 
-## LICENSE
+## License
 
 ```
 MIT License
