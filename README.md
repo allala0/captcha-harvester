@@ -146,6 +146,7 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 - [ ] **hCapctcha compatibility**
 - [ ] **captcha harvester as package**
 - [ ] **captcha harvester installed with pip**
+- [ ] **API integration**
 
 ## License
 
