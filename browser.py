@@ -13,7 +13,7 @@ os.environ['WDM_LOG_LEVEL'] = '0'
 
 class Browser(Chrome):
 
-    def __init__(self, executable: str = None, options: tuple = None, experimental_options: dict = None):
+    def __init__(self, executable: str = None, options: list = None, experimental_options: dict = None):
         self.executable = executable
         if executable:
             if not os.path.isfile(executable):
@@ -24,6 +24,7 @@ class Browser(Chrome):
         if options:
             for option in options:
                 self.options.add_argument(option)
+        self.options.add_argument("--lang=en-US")
         if experimental_options:
             for name, value in experimental_options.items():
                 self.options.add_experimental_option(name, value)

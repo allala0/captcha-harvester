@@ -10,6 +10,7 @@ import time
 import datetime
 from threading import Thread
 import random
+import zipfile
 
 
 class Bot(Browser):
@@ -121,8 +122,8 @@ class Bot(Browser):
 # Example of using captcha harvester with example Bot class that is receiving captcha responses and using them to submit form.
 # NOTE. This example uses 2 Harvester objects, 1 of them uses logging in to Google account and launching extra window with Youtube.
 
-
 def main():
+
     url = 'https://www.google.com/recaptcha/api2/demo'
     # Scraping sitekey from url
     sitekey = Harvester.get_sitekey(url)
@@ -132,7 +133,7 @@ def main():
     # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
     harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
     # Adding Harvester object to HarvesterManager object with additional arguments to login to Google account and open window with Youtube.
-    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True))
+    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True,  proxy='ip:port:login:password'))
     # Launching all harvesters
     harvester_manager.start_harvesters()
     # Creating Bot object with HarvesterManager as argument so it can reach its response_queue
