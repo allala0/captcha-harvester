@@ -73,8 +73,8 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 
 - Example code
 
-    - In <a href="example.py">example.py</a> is shown an example of a simple way to use harvester. To run type in terminal <b>python example.py</b>
-    - In <a href="example_bot.py">example_bot.py</a> is shown an example of connecting harvester with bot and sending solved captcha responses to it. To run type in terminal <b>python example_bot.py</b>
+    - In <a href="example.py">example.py</a> is shown an example of a simple way to use harvester. To run type in terminal `python example.py`
+    - In <a href="example_bot.py">example_bot.py</a> is shown an example of connecting harvester with bot and sending solved captcha responses to it. To run type in terminal `python example_bot.py`. <b>Note</b> that in this example at first is opened window with google login page, you can either log into Google or close this window to continue to harvester.
             
 ## TODO
 
