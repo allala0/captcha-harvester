@@ -80,6 +80,8 @@ For now harvester is compatible with reCAPTCHA v2. In the future it will be comp
 
 - [x] **Proxy support**
 - [x] **reCAPTCHA v2 compatibility**
+- [ ] **Auto reopen Harvester when closed**
+- [ ] **Error handling**
 - [ ] **reCAPTCHA v3 compatibility**
 - [ ] **hCapctcha compatibility**
 - [ ] **captcha harvester as package**
