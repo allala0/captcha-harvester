@@ -133,7 +133,7 @@ def main():
     # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
     harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
     # Adding Harvester object to HarvesterManager object with additional arguments to login to Google account and open window with Youtube.
-    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True,  proxy='ip:port:login:password'))
+    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True))
     # Launching all harvesters
     harvester_manager.start_harvesters()
     # Creating Bot object with HarvesterManager as argument so it can reach its response_queue

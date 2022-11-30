@@ -33,7 +33,7 @@ class Harvester(Browser):
 
     extension_blueprint_path = f'{pathlib.Path().absolute()}/extension'
 
-    def __init__(self, url: str, sitekey: str, proxy: str = None, log_in: bool = False, chrome_executable: str = None, chromedriver_executable: str = None, download_js: bool = False, auto_close_login: bool = True, open_youtube: bool = False, harvester_width: int = 420, harvester_height: int = 600, youtube_width: int = 480, youtube_height: int = 380):
+    def __init__(self, url: str, sitekey: str, proxy: str = None, log_in: bool = False, chrome_executable: str = None, chromedriver_executable: str = None, download_js: bool = True, auto_close_login: bool = True, open_youtube: bool = False, harvester_width: int = 420, harvester_height: int = 600, youtube_width: int = 480, youtube_height: int = 380):
         """
         :param url: Url of website you want to harvest captcha on.
         :param sitekey: Sitekey of website you want to harvest captcha on, can be found in HTML elemement with class "g-recaptcha".
