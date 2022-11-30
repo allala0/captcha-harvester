@@ -15,7 +15,7 @@ fake-useragent==0.1.11
 h11==0.13.0
 idna==3.3
 importlib-metadata==4.10.1
-lxml==4.7.1
+lxml>=4.9.1
 outcome==1.1.0
 parse==1.19.0
 pycparser==2.21
