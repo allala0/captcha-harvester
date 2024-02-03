@@ -1,7 +1,5 @@
 # Importing local packages
-from browser import Browser
-from harvester_manager import HarvesterManger
-from harvester import Harvester
+import harvester
 # Importing external packages
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import WebDriverException
@@ -10,11 +8,10 @@ import time
 import datetime
 from threading import Thread
 import random
-import zipfile
 
 
-class Bot(Browser):
-    def __init__(self, harvester_manager: HarvesterManger, delay: int = 0.1):
+class Bot(harvester.Browser):
+    def __init__(self, harvester_manager: harvester.HarvesterManger, delay: int = 0.1):
 
         super(Bot, self).__init__()
 
@@ -32,8 +29,9 @@ class Bot(Browser):
                     # Try except to be upgraded...
                     try:
                         self.tick()
-                    except WebDriverException:
-                        print('Some selenium exception (bot).')
+                    except WebDriverException as e:
+                        print(e)
+                        self.looping = False
                 time.sleep(self.delay)
 
     def tick(self):
@@ -126,14 +124,14 @@ def main():
 
     url = 'https://www.google.com/recaptcha/api2/demo'
     # Scraping sitekey from url
-    sitekey = Harvester.get_sitekey(url)
+    sitekey = harvester.Harvester.get_sitekey(url)
 
     # Creating HarvesterManager object
-    harvester_manager = HarvesterManger()
+    harvester_manager = harvester.HarvesterManger()
     # Adding Harvester object to HarvesterManager object with url and sitekey as arguments
-    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey))
+    harvester_manager.add_harvester(harvester.Harvester(url=url, sitekey=sitekey))
     # Adding Harvester object to HarvesterManager object with additional arguments to login to Google account and open window with Youtube.
-    harvester_manager.add_harvester(Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True))
+    harvester_manager.add_harvester(harvester.Harvester(url=url, sitekey=sitekey, log_in=True, open_youtube=True))
     # Launching all harvesters
     harvester_manager.start_harvesters()
     # Creating Bot object with HarvesterManager as argument so it can reach its response_queue

@@ -1,5 +1,5 @@
 # Importing local packages
-from browser import Browser
+from .browser import Browser
 # Importing external packages
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
@@ -74,6 +74,7 @@ class Harvester(Browser):
         self.control_element = f'controlElement{random.randint(0, 10 ** 10)}'
         self.is_youtube_setup = False
         self.ticking = False
+        self.closed = False
 
         Harvester.harvester_count += 1
         pathlib.Path(self.profile_path).mkdir(parents=True, exist_ok=True)
@@ -230,7 +231,7 @@ class Harvester(Browser):
     def reset_harvester(self) -> None:
         if not self.is_open:
             return
-        
+
         self.execute_script('grecaptcha.reset();')
 
     def window_size_check(self) -> None:
@@ -275,8 +276,9 @@ class Harvester(Browser):
             self.youtube_setup()
             self.response_check()
             self.window_size_check()
-        except WebDriverException:
-            print('Some Selenium error (harvester).')
+        except WebDriverException as e:
+            print(e)
+            self.closed = True
 
         self.ticking = False
 

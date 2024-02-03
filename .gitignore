@@ -2,6 +2,7 @@
 __pycache__/
 chrome_profiles/
 venv/
+.venv/
 Pipfile
 Pipfile.lock
 ignore/

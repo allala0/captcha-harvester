@@ -1,5 +1,5 @@
 # Importing local packages
-from harvester import Harvester
+from .harvester import Harvester
 # Importing standard packages
 import time
 from threading import Thread
@@ -41,12 +41,17 @@ class HarvesterManger:
             self.looping = True
             while self.looping:
                 self.tick()
+                if len(self.harvesters) == 0:
+                    break
                 time.sleep(self.delay)
 
     def tick(self) -> None:
         self.pull_responses_from_harvesters()
         self.response_queue_check()
         for harvester in self.harvesters:
+            if harvester.closed:
+                self.harvesters.remove(harvester)
+                continue
             if not harvester.ticking:
                 Thread(target=harvester.tick).start()
 
